@@ -23,7 +23,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 
         <!-- load Galleria -->
-        <script src="../../galleria.js"></script>
+        <script src="../../galleria.min.js"></script>
 
     </head>
 <body>
@@ -42,7 +42,7 @@
                     data-description="Horses on Bianditz mountain, in Navarre, Spain."
                 >
             </a>
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Athabasca_Rail_at_Brule_Lake.jpg/800px-Athabasca_Rail_at_Brule_Lake.jpg">
+            <a href="https://vimeo.com/12309423">
                 <img 
                     src="http://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Athabasca_Rail_at_Brule_Lake.jpg/100px-Athabasca_Rail_at_Brule_Lake.jpg",
                     data-big="http://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Athabasca_Rail_at_Brule_Lake.jpg/1280px-Athabasca_Rail_at_Brule_Lake.jpg"
@@ -50,7 +50,7 @@
                     data-description="The Athabasca River railroad track at the mouth of Brulé Lake in Alberta, Canada."
                 >
             </a>
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Back-scattering_crepuscular_rays_panorama_1.jpg/1280px-Back-scattering_crepuscular_rays_panorama_1.jpg">
+            <a href="http://www.dailymotion.com/video/x2fk0i2">
                 <img 
                     src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Back-scattering_crepuscular_rays_panorama_1.jpg/100px-Back-scattering_crepuscular_rays_panorama_1.jpg",
                     data-big="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Back-scattering_crepuscular_rays_panorama_1.jpg/1400px-Back-scattering_crepuscular_rays_panorama_1.jpg"
@@ -58,12 +58,12 @@
                     data-description="Picture of the day on Wikimedia Commons 26 September 2010."
                 >
             </a>
-            <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Interior_convento_3.jpg/800px-Interior_convento_3.jpg">
+            <a href="https://www.youtube.com/watch?v=ARM42-eorzE">
                 <img 
                     src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Interior_convento_3.jpg/120px-Interior_convento_3.jpg",
                     data-big="http://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Interior_convento_3.jpg/1400px-Interior_convento_3.jpg"
                     data-title="Interior convento"
-                    data-description="Interior view of Yuriria Convent, founded in 1550."
+                    data-description="Youtube video"
                 >
             </a>
             <a href="http://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Oxbow_Bend_outlook_in_the_Grand_Teton_National_Park.jpg/800px-Oxbow_Bend_outlook_in_the_Grand_Teton_National_Park.jpg">
@@ -117,7 +117,11 @@
     Galleria.loadTheme('galleria.classic.js');
 
     // Initialize Galleria
-    Galleria.run('#galleria');
+    Galleria.run('#galleria' , {
+        youtube: {
+            'key': '<YOUR_API_KEY>'
+        }
+    });
 
     </script>
     </body>

@@ -117,10 +117,12 @@ var doc    = window.document,
         youtube: {
             reg: /https?:\/\/(?:[a-zA_Z]{2,3}.)?(?:youtube\.com\/watch\?)((?:[\w\d\-\_\=]+&amp;(?:amp;)?)*v(?:&lt;[A-Z]+&gt;)?=([0-9a-zA-Z\-\_]+))/i,
             embed: function() {
-                return 'http://www.youtube.com/embed/' + this.id;
+                return 'https://www.youtube.com/embed/' + this.id;
             },
             getUrl: function() {
-                return PROT + '//gdata.youtube.com/feeds/api/videos/' + this.id + '?v=2&alt=json-in-script&callback=?';
+                //Youtube v2 api is deprecated as of June 2015
+                //return 'https://gdata.youtube.com/feeds/api/videos/' + this.id + '?v=2&alt=json-in-script&callback=?';
+                return 'https://www.googleapis.com/youtube/v3/videos?id=' + this.id + '&part=contentDetails&key=' + this.key +'&callback=?';
             },
             get_thumb: function(data) {
                 return data.entry.media$group.media$thumbnail[2].url;
@@ -135,10 +137,10 @@ var doc    = window.document,
         vimeo: {
             reg: /https?:\/\/(?:www\.)?(vimeo\.com)\/(?:hd#)?([0-9]+)/i,
             embed: function() {
-                return 'http://player.vimeo.com/video/' + this.id;
+                return 'https://player.vimeo.com/video/' + this.id;
             },
             getUrl: function() {
-                return PROT + '//vimeo.com/api/v2/video/' + this.id + '.json?callback=?';
+                return 'https://vimeo.com/api/v2/video/' + this.id + '.json?callback=?';
             },
             get_thumb: function( data ) {
                 return data[0].thumbnail_medium;
@@ -150,7 +152,7 @@ var doc    = window.document,
         dailymotion: {
             reg: /https?:\/\/(?:www\.)?(dailymotion\.com)\/video\/([^_]+)/,
             embed: function() {
-                return PROT + '//www.dailymotion.com/embed/video/' + this.id;
+                return 'https:////www.dailymotion.com/embed/video/' + this.id;
             },
             getUrl: function() {
                 return 'https://api.dailymotion.com/video/' + this.id + '?fields=thumbnail_240_url,thumbnail_720_url&callback=?';
@@ -164,7 +166,7 @@ var doc    = window.document,
         },
         _inst: []
     },
-    Video = function( type, id ) {
+    Video = function( type, id, key ) {
 
         for( var i=0; i<_video._inst.length; i++ ) {
             if ( _video._inst[i].id === id && _video._inst[i].type == type ) {
@@ -174,6 +176,7 @@ var doc    = window.document,
 
         this.type = type;
         this.id = id;
+        this.key = key;
         this.readys = [];
 
         _video._inst.push(this);
@@ -3941,7 +3944,6 @@ Galleria.prototype = {
             };
 
         $.each( this._data, function( i, data ) {
-
             current = self._data[ i ];
 
             // copy image as thumb if no thumb exists
@@ -3957,7 +3959,12 @@ Galleria.prototype = {
                 var result = _videoTest( data.video );
 
                 if ( result ) {
-                    current.iframe = new Video(result.provider, result.id ).embed() + (function() {
+                    //Add an optional API_KEY
+                    result['API_KEY'] = '';
+                    if(typeof self._options[ result.provider ] == 'object' && self._options[ result.provider ].key) {
+                        result['API_KEY'] = self._options[ result.provider ].key; 
+                    }
+                    current.iframe = new Video(result.provider, result.id, result.API_KEY ).embed() + (function() {
 
                         // add options
                         if ( typeof self._options[ result.provider ] == 'object' ) {
@@ -3983,7 +3990,7 @@ Galleria.prototype = {
                                 current.image = undef;
                                 return;
                             }
-                            var video = new Video( result.provider, result.id );
+                            var video = new Video( result.provider, result.id, result.API_KEY);
                             if ( !current[ type ] ) {
                                 current.loading = true;
                                 video.getMedia( type, (function(current, type) {
